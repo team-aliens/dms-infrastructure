@@ -2,7 +2,7 @@ name: "Terraform Plan"
 
 on:
   pull_request:
-
+  
 env:
   TF_CLOUD_ORGANIZATION: "teamdms"
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"

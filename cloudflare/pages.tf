@@ -47,3 +47,9 @@ resource "cloudflare_pages_domain" "admin_pages_domain" {
   project_name = "dms"
   domain       = "admin.aliens-dms.com"
 }
+
+resource "cloudflare_pages_domain" "admin_pages_dev_domain" {
+  account_id   = "16d0f8fe5b59ee4106adfa648547c305"
+  project_name = "dms"
+  domain       = "admin-dev.aliens-dms.com"
+}

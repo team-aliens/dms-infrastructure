@@ -15,7 +15,7 @@ resource "cloudflare_record" "api-dev" {
 }
 
 resource "cloudflare_record" "test" {
-  zone_id = "40a6767b5396de948c6e111852e111cd"
+  zone_id = "${var.zone_id}"
   name    = "test"
   value   = var.dev_eip
   type    = "A"
@@ -23,9 +23,17 @@ resource "cloudflare_record" "test" {
 }
 
 resource "cloudflare_record" "admin" {
-  zone_id = "40a6767b5396de948c6e111852e111cd"
+  zone_id = "${var.zone_id}"
   name    = "admin"
   value   = cloudflare_pages_project.admin_pages.subdomain
+  type    = "CNAME"
+  proxied = true
+}
+
+resource "cloudflare_record" "admin_dev" {
+  zone_id = "${var.zone_id}"
+  name    = "admin-dev"
+  value   = "dev.${cloudflare_pages_project.admin_pages.subdomain}"
   type    = "CNAME"
   proxied = true
 }

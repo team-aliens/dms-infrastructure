@@ -7,13 +7,11 @@ on:
 
 jobs:
   terraform:
-    permissions:
-      contents: read
-
-    runs-on: ubuntu-latest
-
     name: 'Terraform-plan'
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
     
     env:
       TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"

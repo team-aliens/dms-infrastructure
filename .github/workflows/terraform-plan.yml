@@ -5,12 +5,12 @@ on:
 
 jobs:
   terraform-plan:
+    name: 'Terraform-plan'
+    runs-on: ubuntu-latest
+
     permissions:
       contents: read
       pull-requests: write
-
-    name: 'Terraform-plan'
-    runs-on: ubuntu-latest
     
     env:
       TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"

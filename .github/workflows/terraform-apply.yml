@@ -5,41 +5,29 @@ on:
     branches:
       - master
 
-env:
-  TF_CLOUD_ORGANIZATION: "teamdms"
-  TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
-  TF_WORKSPACE: "dms"
-  CONFIG_DIRECTORY: "./"
-
 jobs:
-  terraform:
-    name: "Terraform Apply"
+  terraform-apply:
+    name: 'Terraform-apply'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
+    
+    env:
+      TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
+      TF_IN_AUTOMATION: true
+      TF_WORKSPACE: dms
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Upload Configuration
-        uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
-        id: apply-upload
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
         with:
-          workspace: ${{ env.TF_WORKSPACE }}
-          directory: ${{ env.CONFIG_DIRECTORY }}
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_version: 1.4.6
 
-      - name: Create Apply Run
-        uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
-        id: apply-run
-        with:
-          workspace: ${{ env.TF_WORKSPACE }}
-          configuration_version: ${{ steps.apply-upload.outputs.configuration_version_id }}
-
-      - name: Apply
-        uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
-        if: fromJSON(steps.apply-run.outputs.payload).data.attributes.actions.IsConfirmable
-        id: apply
-        with:
-          run: ${{ steps.apply-run.outputs.run_id }}
-          comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
-          
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -input=false

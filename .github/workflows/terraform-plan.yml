@@ -5,6 +5,10 @@ on:
 
 jobs:
   terraform-plan:
+    permissions:
+      contents: read
+      pull-requests: write
+
     name: 'Terraform-plan'
     runs-on: ubuntu-latest
     
@@ -12,7 +16,9 @@ jobs:
       TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TF_IN_AUTOMATION: true
-      TF_WORKSPACE: dms
+      TF_CLOUD_ORGANIZATION: "teamdms"
+      TF_WORKSPACE: "dms"
+      CONFIG_DIRECTORY: "./"
 
     steps:
       - name: Checkout

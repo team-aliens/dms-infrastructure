@@ -6,8 +6,8 @@ on:
       - master
 
 jobs:
-  terraform:
-    name: 'Terraform-plan'
+  terraform-apply:
+    name: 'Terraform-apply'
     runs-on: ubuntu-latest
 
     permissions:

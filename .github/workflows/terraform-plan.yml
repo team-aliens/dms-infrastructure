@@ -29,7 +29,6 @@ jobs:
         run: terraform init
 
       - name: Post Init
-        if: (steps.init.outcome == 'success' || steps.init.outcome == 'failure')
         uses: robburger/terraform-pr-commenter@v1
         with:
           commenter_type: init
@@ -40,8 +39,7 @@ jobs:
         id: plan
         run: terraform plan
 
-      - name: Post Plan
-        if: (steps.plan.outcome == 'success' || steps.plan.outcome == 'failure')
+      - name: Post Plan - ${{ matrix['workspace'] }}
         uses: robburger/terraform-pr-commenter@v1
         with:
           commenter_type: plan

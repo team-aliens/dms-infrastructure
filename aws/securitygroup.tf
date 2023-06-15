@@ -18,13 +18,6 @@ resource "aws_security_group" "dms_sg" {
     }
 
     ingress {
-        from_port       = 22
-        to_port         = 22
-        protocol        = "tcp"
-        cidr_blocks     = ["118.235.27.147/32"]
-    }
-
-    ingress {
         from_port       = 6379
         to_port         = 6379
         protocol        = "tcp"

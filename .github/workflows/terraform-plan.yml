@@ -36,10 +36,10 @@ jobs:
       - name: Post Init
         if: (steps.init.outcome == 'success' || steps.init.outcome == 'failure')
         uses: robburger/terraform-pr-commenter@v1
-          with:
-            commenter_type: init
-            commenter_input: ${{ format('{0}{1}', steps.init.outputs.stdout, steps.init.outputs.stderr) }}
-            commenter_exitcode: ${{ steps.init.outputs.exitcode }}
+        with:
+          commenter_type: init
+          commenter_input: ${{ format('{0}{1}', steps.init.outputs.stdout, steps.init.outputs.stderr) }}
+          commenter_exitcode: ${{ steps.init.outputs.exitcode }}
 
       - name: Terraform Plan
         id: plan

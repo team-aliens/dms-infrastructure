@@ -38,7 +38,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -out ${{ env.TF_WORKSPACE }}.plan
+        run: terraform plan
 
       - name: Post Plan
         if: (steps.plan.outcome == 'success' || steps.plan.outcome == 'failure')

@@ -5,18 +5,24 @@ on:
     branches:
       - master
 
-env:
-  TF_CLOUD_ORGANIZATION: "teamdms"
-  TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
-  TF_WORKSPACE: "dms"
-  CONFIG_DIRECTORY: "./"
-
 jobs:
   terraform:
-    name: "Terraform Apply"
-    runs-on: ubuntu-latest
     permissions:
       contents: read
+
+    runs-on: ubuntu-latest
+
+    name: 'Terraform-plan'
+    runs-on: ubuntu-latest
+    
+    env:
+      TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TF_IN_AUTOMATION: true
+      TF_CLOUD_ORGANIZATION: "teamdms"
+      TF_WORKSPACE: "dms"
+      CONFIG_DIRECTORY: "./"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -42,4 +48,3 @@ jobs:
         with:
           run: ${{ steps.apply-run.outputs.run_id }}
           comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
- No newline at end of file

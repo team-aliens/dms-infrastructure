@@ -1,10 +1,9 @@
 terraform {
 
-  backend "remote" {
-    hostname = "app.terraform.io"
+  cloud {
     organization = "teamdms"
     workspaces {
-      prefix = "dms"
+      name = "dms"
     }
   }
 

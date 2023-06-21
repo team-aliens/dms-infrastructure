@@ -18,6 +18,7 @@ jobs:
       TF_IN_AUTOMATION: true
       TF_CLOUD_ORGANIZATION: "teamdms"
       TF_WORKSPACE: "dms"
+      TF_VAR_zone_id: ${{ secrets.TF_VAR_ZONE_ID }} 
       CONFIG_DIRECTORY: "./"
 
     steps:
@@ -39,8 +40,6 @@ jobs:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.plan-upload.outputs.configuration_version_id }}
           plan_only: true
-        env:
-          TF_VAR_ZONE_ID: ${{ env.TF_VAR_ZONE_ID }} 
 
       - name: Get Plan Output
         uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.0.0

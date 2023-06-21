@@ -19,6 +19,7 @@ jobs:
       TF_IN_AUTOMATION: true
       TF_CLOUD_ORGANIZATION: "teamdms"
       TF_WORKSPACE: "dms"
+      TF_VAR_zone_id: ${{ secrets.TF_VAR_ZONE_ID }} 
       CONFIG_DIRECTORY: "./"
 
     steps:
@@ -38,8 +39,6 @@ jobs:
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.apply-upload.outputs.configuration_version_id }}
-        env:
-          TF_VAR_ZONE_ID: ${{ env.TF_VAR_ZONE_ID }} 
 
       - name: Apply
         uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0

@@ -1,9 +1,12 @@
 variable zone_id {
-    default = "40a6767b5396de948c6e111852e111cd"
+    description = "cloudflare zoneId"
+    type        = string
 }
 
 variable prod_eip {
+    description = "prod server ip"
 }
 
 variable dev_eip {
+    description = "deb server ip"
 }

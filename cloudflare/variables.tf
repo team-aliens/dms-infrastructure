@@ -8,5 +8,5 @@ variable prod_eip {
 }
 
 variable dev_eip {
-    description = "deb server ip"
+    description = "dev server ip"
 }

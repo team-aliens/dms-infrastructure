@@ -1,6 +1,6 @@
 resource "cloudflare_pages_project" "admin_pages" {
 
-  account_id        = "16d0f8fe5b59ee4106adfa648547c305"
+  account_id        = var.account_id
   name              = "dms"
   production_branch = "main"
 
@@ -39,17 +39,16 @@ resource "cloudflare_pages_project" "admin_pages" {
       }
     }
   }
-
 }
 
 resource "cloudflare_pages_domain" "admin_pages_domain" {
-  account_id   = "16d0f8fe5b59ee4106adfa648547c305"
+  account_id   = var.account_id
   project_name = "dms"
   domain       = "admin.aliens-dms.com"
 }
 
 resource "cloudflare_pages_domain" "admin_pages_dev_domain" {
-  account_id   = "16d0f8fe5b59ee4106adfa648547c305"
+  account_id   = var.account_id
   project_name = "dms"
   domain       = "admin-dev.aliens-dms.com"
 }

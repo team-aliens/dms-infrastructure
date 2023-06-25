@@ -39,8 +39,6 @@ jobs:
           workspace: ${{ env.TF_WORKSPACE }}
           configuration_version: ${{ steps.plan-upload.outputs.configuration_version_id }}
           plan_only: true
-        env:
-          TF_VAR_zone_id: ${{ secrets.TF_VAR_ZONE_ID }} 
 
       - name: Get Plan Output
         uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.0.0

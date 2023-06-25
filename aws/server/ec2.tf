@@ -1,4 +1,6 @@
 resource "aws_instance" "server" {
+
+    ## Instance optoins ##
     ami                         = "ami-0e9bfdb247cc8de84"
     availability_zone           = "ap-northeast-2c"
     ebs_optimized               = true
@@ -49,5 +51,34 @@ resource "aws_instance" "server" {
 
     tags = {
         "Name" = "${var.server_name}"
+    }
+
+    ## Nginx options ##
+    connection {
+        user        = "ubuntu"
+        type        = "ssh"
+        host        = self.public_ip
+        private_key = "${var.private_key_pem}"
+    }
+
+    provisioner "file" {
+        source = "nginx/"
+        destination = "~/dms-server/nginx/"
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+            "sudo apt-get install docker",
+            "sudo service docker start",
+            "sudo docker run -d -p 80:80 -v ~/dms-server/nginx:/etc/nginx/sites-enabled --name nginx nginx",
+            "sudo snap install --classic certbot",
+            "ln -s /snap/bin/certbot /usr/bin/certbot",
+            <<EOT
+                sudo certbot --nginx -n
+                %{ for domain in var.domains~}
+                -d ${domain}
+                %{ endfor ~}
+            EOT
+        ]
     }
 }

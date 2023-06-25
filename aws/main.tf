@@ -13,17 +13,19 @@ provider "aws" {
 }
 
 module "prod" {
-  source = "./server"
+  source      = "./server"
   server_name = "DMS-PROD"
-  sg_id = aws_security_group.dms_sg.id
-  private_key_pem = aws_key_pair.dms_server_key
-  domains = [ "api.aliens-dms.com" ]
+  ssh_port    = 2222
+  sg_id       = aws_security_group.dms_sg.id
+  private_key = tls_private_key.private_key
+  domains     = [ "api.aliens-dms.com" ]
 }
 
 module "dev" {
-  source = "./server"
+  source      = "./server"
   server_name = "DMS-DEV"
-  sg_id = aws_security_group.dms_sg.id
-  private_key_pem = aws_key_pair.dms_server_key
-  domains = [ "api-dev.aliens-dms.com" ]
+  ssh_port    = 2222
+  sg_id       = aws_security_group.dms_sg.id
+  private_key = tls_private_key.private_key
+  domains     = [ "api-dev.aliens-dms.com" ]
 }

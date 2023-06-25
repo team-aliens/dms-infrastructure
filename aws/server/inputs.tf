@@ -6,7 +6,11 @@ variable "sg_id" {
     description = "security group id"
 }
 
-variable "private_key_pem" {
+variable "ssh_port" {
+    description = "ssh port"
+}
+
+variable "private_key" {
     description = "instance private key pem"
 }
 

@@ -57,22 +57,29 @@ resource "aws_instance" "server" {
     connection {
         user        = "ubuntu"
         type        = "ssh"
-        host        = self.public_ip
-        private_key = "${var.private_key_pem}"
-    }
-
-    provisioner "file" {
-        source = "nginx/"
-        destination = "~/dms-server/nginx/"
+        port        = "${var.ssh_port}"
+        host        = self.public_ip 
+        private_key = "${var.private_key.private_key_pem}"
     }
 
     provisioner "remote-exec" {
         inline = [
-            "sudo apt-get install docker",
-            "sudo service docker start",
-            "sudo docker run -d -p 80:80 -v ~/dms-server/nginx:/etc/nginx/sites-enabled --name nginx nginx",
+            "sudo -p mkdir /etc/nginx/sites-enabled"
+        ]
+    }
+
+    provisioner "file" {
+        source = "${path.module}/nginx/${var.server_name}"
+        destination = "/etc/nginx/sites-enabled"
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+            "sudo apt-get update",
+            "sudo apt install nginx",
+            "sudo systemctl start nginx",
             "sudo snap install --classic certbot",
-            "ln -s /snap/bin/certbot /usr/bin/certbot",
+            "sudo ln -s /snap/bin/certbot /usr/bin/certbot",
             <<EOT
                 sudo certbot --nginx -n
                 %{ for domain in var.domains~}

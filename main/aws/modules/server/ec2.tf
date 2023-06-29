@@ -1,16 +1,30 @@
+data "aws_ami" "ubuntu" {
+    most_recent = true
+    filter {
+        name   = "name"
+        values = [var.ami_name]
+    }
+    owners = [var.ami_owners]
+}
+
 resource "aws_instance" "server" {
 
     ## Instance optoins ##
-    ami                         = "ami-0e9bfdb247cc8de84"
-    availability_zone           = "ap-northeast-2c"
+    ami                         = data.aws_ami.ubuntu.id
     ebs_optimized               = true
-    instance_type               = "c5d.large"
+
+    availability_zone           = var.instance_az
+    instance_type               = var.instance_type
+    key_name                    = var.key_name
+    subnet_id                   = var.subnet_id
+
     monitoring                  = false
-    key_name                    = "DMS_SERVER_KEY"
-    subnet_id                   = "subnet-0915cca8dc3e0fe3d"
-    vpc_security_group_ids      = [var.sg_id]
-    associate_public_ip_address = true
+    associate_public_ip_address = false
     source_dest_check           = true
+
+    tags = {
+        "Name" = "${var.server_name}"
+    }
 
     root_block_device {
         volume_type           = "gp2"
@@ -49,17 +63,13 @@ resource "aws_instance" "server" {
         hostname_type                        = "ip-name"
     }
 
-    tags = {
-        "Name" = "${var.server_name}"
-    }
-
     ## Nginx options ##
     connection {
         user        = "ubuntu"
         type        = "ssh"
-        port        = "${var.ssh_port}"
+        port        = var.ssh_port
         host        = self.public_ip 
-        private_key = "${var.private_key.private_key_pem}"
+        private_key = var.private_key
     }
 
     provisioner "remote-exec" {

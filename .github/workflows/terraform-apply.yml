@@ -19,7 +19,7 @@ jobs:
       TF_IN_AUTOMATION: true
       TF_CLOUD_ORGANIZATION: "teamdms"
       TF_WORKSPACE: "dms"
-      CONFIG_DIRECTORY: "./"
+      CONFIG_DIRECTORY: "./main"
 
     steps:
       - name: Checkout

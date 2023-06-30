@@ -10,7 +10,7 @@ variable "vpc_cidr" {
 
 variable "azs" {
     type = list(string)
-    default = slice(data.aws_availability_zones.zones.names, 0, 3)
+    default = ["ap-northeast-2a", "ap-northeast-2c"]
 }
 
 variable "public_subnets" {
